@@ -11,11 +11,12 @@ useEffect(() => {
 }, [])
 
 const [products, setProducts] = useState()
+const [cart, setCart] = useState([])
 
 
   return (
     <div>
-      {products ? products.map(p => <Product data={p} key={p.id} />) : 'laddar produkter' }
+      {products ? products.map(p => <Product data={p} key={p.id} setCart={setCart} cart={cart} />) : 'laddar produkter' }
       <StripeSession />
     </div>
   );
