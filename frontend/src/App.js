@@ -1,6 +1,7 @@
 import StripeSession from './components/StripeSession';
 import { useState, useEffect } from 'react'
 import Product from './components/Product';
+import Cart from './components/Cart';
 
 function App() {
 
@@ -16,6 +17,7 @@ const [cart, setCart] = useState([])
 
   return (
     <div>
+      <Cart  cart={cart}/>
       {products ? products.map(p => <Product data={p} key={p.id} setCart={setCart} cart={cart} />) : 'laddar produkter' }
       <StripeSession />
     </div>
