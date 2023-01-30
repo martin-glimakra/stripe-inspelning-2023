@@ -19,7 +19,7 @@ const [cart, setCart] = useState([])
     <div>
       <Cart  cart={cart}/>
       {products ? products.map(p => <Product data={p} key={p.id} setCart={setCart} cart={cart} />) : 'laddar produkter' }
-      <StripeSession />
+      <StripeSession cart={cart} />
     </div>
   );
 }

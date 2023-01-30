@@ -1,27 +1,15 @@
-export default function StripeSession() {
+export default function StripeSession({ cart }) {
 
 function startSession () {
 
-    let items = [
-        {
-          id: 15,
-          quantity: 1,
-          name: "bulle",
-          priceInCents: 3000
-        },
-        {
-          id: 15,
-          quantity: 1,
-          name: "bulle",
-          priceInCents: 3000
-        },
-        {
-          id: 14,
-          quantity: 1,
-          name: "kaka",
-          priceInCents: 2000
-        }
-      ]
+    let items = cart.map(item => {
+      return {
+        id: item.id,
+        quantity: 1,
+        name: item.name,
+        priceInCents: item.price * 100
+      }
+    })
 
       fetch('http://localhost:5000/create-checkout-session' , {
         method: 'POST',
