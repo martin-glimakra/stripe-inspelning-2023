@@ -64,15 +64,40 @@ app.get("/get-all-products", async (req, res) => {
     });})
 
 
-function createWcOrder () {
+    app.post('/stripe-complete', express.raw({type: 'application/json'}), (request, response) => {
+
+      let event = request.body
+    
+      // Handle the event
+      switch (event.type) {
+        case 'checkout.session.completed':
+          const { payment_status, customer_details } = event.data.object;
+          const { email, name } = customer_details
+
+          if(payment_status === 'paid'){
+            createWcOrder(email, name)
+          }
+
+          break;
+        // ... handle other event types
+        default:
+          console.log(`Unhandled event type ${event.type}`);
+      }
+    
+      // Return a 200 response to acknowledge receipt of the event
+      response.send();
+    });
+
+
+function createWcOrder (email, name) {
     console.log('createWcOrder körs')
 
     const data = {
-        payment_method: "bacs",
+        payment_method: "Martins stripe integration",
         payment_method_title: "Direct Bank Transfer",
         set_paid: true,
         billing: {
-          first_name: "John",
+          first_name: name,
           last_name: "Doe",
           address_1: "969 Market",
           address_2: "",
@@ -80,7 +105,7 @@ function createWcOrder () {
           state: "CA",
           postcode: "94103",
           country: "US",
-          email: "john.doe@example.com",
+          email: email,
           phone: "(555) 555-5555"
         },
         shipping: {
